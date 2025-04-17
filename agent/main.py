@@ -23,12 +23,21 @@ def main(query):
     print("[yellow]Do you want to run this command? (y/n)[/yellow]")
     if input().lower() == "y":
         try:
-            subprocess.Popen(
+            process = subprocess.Popen(
                 full_command,
                 shell=True,
-                executable="/bin/bash",)
+                executable="/bin/bash",
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,)
+            stdout , stderr = process.communicate()
+            if stdout:
+                print(f"[green]Output:[/green] {stdout.decode('utf-8')}")
+            if stderr:
+                print(f"[red]Error:[/red] {stderr.decode('utf-8')}")
         except subprocess.CalledProcessError as e:
             print(f"[red]Error executing command: {e}[/red]")
+        except Exception as e:
+            print(f"[red]An unexpected error occurred: {e}[/red]")
 
 if __name__ == "__main__":
     main()
