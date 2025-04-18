@@ -16,6 +16,7 @@ def main(query):
     print(f"[bold cyan]processing:[/bold cyan] {user_query}.")
     command, explanation = generate_command(user_query)
     commands = normalize_command(command)
+    commands.insert(0, "set -e")  # Ensure the script exits on error
     full_command = "\n".join(commands)
     print("[green]Query processed successfully![/green]") # This is a placeholder for the actual processing logic
     print(f"[cyan]Command:[/cyan] {full_command}")
