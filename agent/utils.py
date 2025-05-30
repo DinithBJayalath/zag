@@ -13,15 +13,6 @@ DANGEROUS_COMMAND_PATTERNS = [
     r"sudo\s+[^ ]*",                    # sudo without awareness
 ]
 
-def split_multi_line_commands(cmd):
-    """
-    Takes a multi-line command string and splits it into individual shell commands.
-    Ignores blank lines, removes comment lines and trims each command.
-    """
-    lines = cmd.strip().splitlines()
-    commands = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
-    return commands
-
 def is_dangerous_command(command):
     """
     Checks if the command contains any dangerous patterns.
@@ -34,3 +25,18 @@ def is_dangerous_command(command):
     if warnings:
         return True, warnings
     return False, []
+
+def tokenize_command(full_command):
+    """
+    Tokenizes a shell command into its components.
+    Returns a list of tokens.
+    """
+    tokens = []
+    # Splitting multi-line commands into separate commands
+    command_lines = full_command.strip().splitlines()
+    commands = [line.strip() for line in command_lines if line.strip() and not line.strip().startswith("#")]
+    for command in commands:
+        temp_tokens = re.split(r'\s*(?;|&&|\|\||;|&)\s*', command) # split returns a list, so save temporarily
+        for token in temp_tokens: # iterate over the temporary lisst and add to the main list
+            tokens.append(token)
+    return [token.strip() for token in tokens if token.strip()]
