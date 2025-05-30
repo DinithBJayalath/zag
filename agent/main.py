@@ -3,7 +3,7 @@ import os
 import subprocess
 from rich import print
 from agent import generate_command
-from utils import normalize_command
+from utils import split_multi_line_commands
 
 @click.command() # denotes the function as a CLI entry point
 @click.argument("query", nargs=-1) # Accepts a positional argument query, allows to pass multiple words
@@ -15,7 +15,7 @@ def main(query):
         return
     print(f"[bold cyan]processing:[/bold cyan] {user_query}.")
     command, explanation = generate_command(user_query)
-    commands = normalize_command(command)
+    commands = split_multi_line_commands(command)
     commands.insert(0, "set -e")  # Ensure the script exits on error
     full_command = "\n".join(commands)
     print("[green]Query processed successfully![/green]") # This is a placeholder for the actual processing logic
