@@ -31,7 +31,7 @@ def generate_command(query):
 
 def parse_response(content):
     """
-    Extracts command and explanation from LLM response.
+    Extracts command and explanation from LLM response.  
     Supports code blocks and plain text fallbacks.
     """
     # Step 1: Try to extract from code block
