@@ -1,26 +1,18 @@
 package ui
 
 import (
-	"github.com/charmbracelet/bubbles/textinput"
-	"github.com/charmbracelet/bubbletea"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Model struct {
-	input       textinput.Model
-	prompt      string
-	command     string
-	explanation string
-	stage       string // "input", "thinking", "confirmation", "executing"
-	errMsg      string
+	path  string
+	input string
 }
 
 func InitialModel() Model {
-	input := textinput.New()
-	input.Placeholder = "ZAG> "
-	input.Focus()
+	path := "~"
 	return Model{
-		input: input,
-		stage: "input",
+		path: path,
 	}
 }
 
