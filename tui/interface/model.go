@@ -9,10 +9,12 @@ import (
 )
 
 type Model struct {
-	path  string
-	vp    viewport.Model
-	input textinput.Model
-	ptmx  *os.File
+	path    string //TODO: use this to show current path in prompt
+	vp      viewport.Model
+	input   textinput.Model
+	ptmx    *os.File
+	content string
+	err     error
 }
 
 func InitialModel() Model {
@@ -23,5 +25,5 @@ func InitialModel() Model {
 }
 
 func (m Model) Init() tea.Cmd {
-	return tea.Batch(startShell(), readPTY(m))
+	return startShell()
 }

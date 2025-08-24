@@ -17,6 +17,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		var cmd tea.Cmd
 		m.input, cmd = m.input.Update(msg)
 		return m, cmd
+	case initPTYMsg:
+		m.ptmx = msg.f
+		return m, readPTY(m)
+	case ptyOutMsg:
+		m.content += string(msg.data)
+		m.vp.SetContent(m.content)
+		return m, readPTY(m)
+	case errMsg:
+		m.err = msg.err
 	}
 	return m, nil
 }
