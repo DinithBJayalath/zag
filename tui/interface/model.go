@@ -1,12 +1,17 @@
 package ui
 
 import (
+	"os"
+
+	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Model struct {
 	path  string
+	vp    viewport.Model
 	input string
+	ptmx  *os.File
 }
 
 func InitialModel() Model {
@@ -17,5 +22,5 @@ func InitialModel() Model {
 }
 
 func (m Model) Init() tea.Cmd {
-	return nil
+	return tea.Batch(startShell(), readPTY(m))
 }
