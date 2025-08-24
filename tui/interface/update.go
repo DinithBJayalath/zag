@@ -11,10 +11,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c":
 			return m, tea.Quit
 		case "enter":
-			return m, nil //TODO: Send input to the server
-		default:
-			m.input += msg.String()
+			line := m.input.Value() + "\n"
+			return m, writePTY([]byte(line), m) //TODO: Send input to the server
 		}
+		var cmd tea.Cmd
+		m.input, cmd = m.input.Update(msg)
+		return m, cmd
 	}
 	return m, nil
 }

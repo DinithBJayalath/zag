@@ -3,6 +3,7 @@ package ui
 import (
 	"os"
 
+	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -10,7 +11,7 @@ import (
 type Model struct {
 	path  string
 	vp    viewport.Model
-	input string
+	input textinput.Model
 	ptmx  *os.File
 }
 
