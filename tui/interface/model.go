@@ -18,9 +18,16 @@ type Model struct {
 }
 
 func InitialModel() Model {
+	initialInput := textinput.New()
+    initialInput.Focus()
+    initialInput.CharLimit = 256
+    initialInput.Width = 50
+	vp := viewport.New(80, 20)
 	path := "~"
 	return Model{
-		path: path,
+		path:   path,
+		vp:     vp,
+		input:  initialInput,
 	}
 }
 
