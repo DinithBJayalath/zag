@@ -7,6 +7,6 @@ func (m Model) View() string {
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
 		m.vp.View(),
-		"\n> "+m.input.View(),
+		m.path+"\n"+m.input.View(),
 	)
 }
