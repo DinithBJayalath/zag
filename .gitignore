@@ -1,1 +1,10 @@
 .env
+
+
+// wails
+tui/.task
+tui/bin
+tui/frontend/dist
+tui/frontend/node_modules
+tui/build/linux/appimage/build
+tui/build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
