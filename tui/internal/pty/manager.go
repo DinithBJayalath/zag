@@ -28,12 +28,12 @@ func startPty(ctx context.Context) (*PTYSession, error) {
 		return nil, fmt.Errorf("faild to start pty: %s", err)
 	}
 	session := &PTYSession{cmd: cmd, ptmx: ptmx, ctx: ctx}
-	go session.readOutput()
-	session.listenForInput()
+	go session.ReadOutput()
+	session.ListenForInput()
 	return session, nil
 }
 
-func (s *PTYSession) readOutput() {
+func (s *PTYSession) ReadOutput() {
 	reader := bufio.NewReader(s.ptmx)
 	for {
 		buf := make([]byte, 1024)
@@ -45,7 +45,7 @@ func (s *PTYSession) readOutput() {
 	}
 }
 
-func (s *PTYSession) listenForInput() {
+func (s *PTYSession) ListenForInput() {
 	runtime.EventsOn(s.ctx, "pty-input", func(optionalData ...interface{}) {
 		if len(optionalData) > 0 {
 			if data, ok := optionalData[0].(string); ok {
@@ -53,4 +53,9 @@ func (s *PTYSession) listenForInput() {
 			}
 		}
 	})
+}
+
+func (s *PTYSession) Close() {
+	s.ptmx.Close()
+	s.cmd.Process.Kill()
 }
