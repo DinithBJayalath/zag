@@ -3,7 +3,7 @@
 
 // wails
 tui/.task
-tui/bin
+tui/build/bin
 tui/frontend/dist
 tui/frontend/node_modules
 tui/build/linux/appimage/build
