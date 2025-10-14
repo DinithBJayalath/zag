@@ -17,7 +17,7 @@ type PTYSession struct {
 	ctx  context.Context
 }
 
-func startPty(ctx context.Context) (*PTYSession, error) {
+func StartPty(ctx context.Context) (*PTYSession, error) {
 	shell := os.Getenv("SHELL")
 	if shell == "" {
 		shell = "bin/bash"
