@@ -1,11 +1,9 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
 import TerminalView from './TerminalView';
+import "./app.css"
 
 function App() {
     return (
-        <div style={{ height: "100vh", width: "100vw" }}>
+        <div className='main-div' style={{ height: "100vh", width: "100vw" }}>
             <TerminalView />
         </div>
     );
