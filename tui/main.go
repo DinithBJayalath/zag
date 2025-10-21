@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"embed"
+	"fmt"
 	"tui/internal/pty"
 
 	"github.com/wailsapp/wails/v2"
@@ -35,15 +35,15 @@ func main() {
 	app := &App{}
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "tui",
+		Title:  "Zag",
 		Width:  1024,
 		Height: 768,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup: app.startup,
-		OnDomReady: app.domReady,
+		OnStartup:        app.startup,
+		OnDomReady:       app.domReady,
 		Bind: []interface{}{
 			app,
 		},

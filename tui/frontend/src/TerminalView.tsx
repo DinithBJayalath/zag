@@ -1,25 +1,35 @@
 import { useEffect, useRef } from "react";
 import { Terminal } from "xterm";
 import "xterm/css/xterm.css";
+import {EventsEmit, EventsOn} from "../wailsjs/runtime";
 
 export default function TerminalView() {
   const termRef = useRef<HTMLDivElement>(null);
+  const term = useRef<Terminal | null>(null);
 
   useEffect(() => {
-    const term = new Terminal({
+    term.current = new Terminal({
       fontFamily: "monospace",
       theme: { background: "#000000", foreground: "#cccccc" },
       cursorBlink: true,
       scrollback: 1000,
     });
-
-    if (termRef.current) {
-      term.open(termRef.current);
-      term.write("Welcome to TermGo!\r\n");
+    if (termRef.current && term.current) {
+      term.current.open(termRef.current);
+      term.current.write("Welcome to TermGo!\r\n");
     }
-
+    term.current.focus();
+    term.current.onData((data)=> {
+      EventsEmit("pty-input", data);
+    });
+    const unsubscribe = EventsOn("pty-output", (outEvent) => {
+      term.current?.write(outEvent.data);
+    });
     // We'll connect PTY output here in the next step
-    return () => term.dispose();
+    return () => {
+      unsubscribe();
+      term.current?.dispose();
+    };
   }, []);
 
   return <div ref={termRef} style={{ height: "100%", width: "100%" }} />;
