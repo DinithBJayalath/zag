@@ -22,8 +22,13 @@ export default function TerminalView() {
     term.current.onData((data)=> {
       EventsEmit("pty-input", data);
     });
+    const textDecoder = new TextDecoder();
     const unsubscribe = EventsOn("pty-output", (outEvent) => {
-      term.current?.write(outEvent.data);
+      if (typeof outEvent == "string") {
+      term.current?.write(outEvent);
+      } else {
+        term.current?.write((atob(textDecoder.decode(outEvent.data))));
+      }
     });
     // We'll connect PTY output here in the next step
     return () => {
