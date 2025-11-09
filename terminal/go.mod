@@ -2,11 +2,14 @@ module terminal
 
 go 1.24.3
 
-require fyne.io/fyne/v2 v2.7.0
+require fyne.io/fyne/v2 v2.7.1-0.20251105193630-e5ef0983771f
 
 require (
 	fyne.io/systray v1.11.1-0.20250603113521-ca66a66d8b58 // indirect
+	github.com/ActiveState/termtest/conpty v0.5.0 // indirect
+	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
+	github.com/creack/pty v1.1.21 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
@@ -14,6 +17,7 @@ require (
 	github.com/fyne-io/glfw-js v0.3.0 // indirect
 	github.com/fyne-io/image v0.1.1 // indirect
 	github.com/fyne-io/oksvg v0.2.0 // indirect
+	github.com/fyne-io/terminal v0.0.0-20251106165431-99c9362a70d2 // indirect
 	github.com/go-gl/gl v0.0.0-20231021071112-07e5d0ea2e71 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20240506104042-037f3cc74f2a // indirect
 	github.com/go-text/render v0.2.0 // indirect
