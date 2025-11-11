@@ -15,7 +15,7 @@ func AttachTerminal(termApp fyne.App) fyne.CanvasObject {
 	tmp, _ := os.MkdirTemp("", "zag-zdotdir-")
 	_ = os.WriteFile(filepath.Join(tmp, ".zshrc"), []byte(`
 	setopt PROMPT_SUBST
-	PROMPT='%F{#018ADA}%2~ ❯%f '
+	PROMPT='%F{#089DDA}%2~ ❯%f '
 	RPROMPT=''
 	`), 0600)
 	os.Setenv("ZDOTDIR", tmp)

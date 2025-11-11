@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package nlAgent;
+
+option go_package = "terminal/main";
+
+service NLAgent {
+    rpc SendPrompt(PromptRequest) returns (LLMResponse);
+}
+
+message PromptRequest {
+    string prompt = 1;
+    optional int32 max_tokens = 2;
+    float temperature = 3;
+}
+
+message LLMResponse {
+    string response = 1;
+    optional int32 tokens_used = 2;
+    bool success = 3;
+    optional string error_message = 4;
+}
