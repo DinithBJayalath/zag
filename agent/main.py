@@ -1,5 +1,6 @@
 import click
 import os
+import json
 import subprocess
 from rich import print
 from agent import generate_command
@@ -48,6 +49,22 @@ def main(query):
             print(f"[red]Error executing command: {e}[/red]")
         except Exception as e:
             print(f"[red]An unexpected error occurred: {e}[/red]")
+
+def processCommand(query):
+    user_query = " ".join(query)
+    if not user_query:
+        return "No natural language query found"
+    command, explanation = generate_command(user_query)
+    commands = tokenize_command(command)
+    commands.insert(0, "set -e")  # Ensure the script exits on error
+    full_command = "\n".join(commands)
+    is_dangerous, warnings = is_dangerous_command(commands)
+    response = json.dumps({
+            "Command":full_command,
+            "Explanation": explanation,
+            "Is_Dangerous" : is_dangerous
+        })
+    return response
 
 if __name__ == "__main__":
     main()
