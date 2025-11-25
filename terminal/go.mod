@@ -5,6 +5,8 @@ go 1.24.3
 require (
 	fyne.io/fyne/v2 v2.7.1-0.20251105193630-e5ef0983771f
 	github.com/fyne-io/terminal v0.0.0-20251106165431-99c9362a70d2
+	google.golang.org/grpc v1.76.0
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
@@ -42,7 +44,5 @@ require (
 	golang.org/x/sys v0.34.0 // indirect
 	golang.org/x/text v0.27.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250804133106-a7a43d27e69b // indirect
-	google.golang.org/grpc v1.76.0 // indirect
-	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
