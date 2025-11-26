@@ -26,7 +26,7 @@ func RPCClient() {
 	var opts []grpc.DialOption
 	conn, err := grpc.NewClient("http://localhost:50051", opts...)
 	if err != nil {
-		log.Printf("Error: %s", err)
+		log.Printf("Error: %s", err.Error())
 		return
 	}
 	defer conn.Close()
