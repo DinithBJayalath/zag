@@ -12,7 +12,7 @@ import (
 type Router struct {
 	dst io.WriteCloser
 	term *terminal.Terminal
-	prefix string = "nl"
+	prefix string
 	NLRequest func(prompt, cwd string) (pb.LLMResponse, error)
 	buf []rune
 }
