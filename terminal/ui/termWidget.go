@@ -31,7 +31,8 @@ func AttachTerminal(termApp fyne.App) fyne.CanvasObject {
 	defer ptmx.Close()
 	// Setting up the terminal widget
 	term := terminal.New()
-	router := utils.NewRouter(ptmx, term)
+	client := utils.RPCClient()
+	router := utils.NewRouter(ptmx, term, client)
 	go func() {
 		_ = term.RunWithConnection(router, ptmx)
 		log.Printf("Shell exited: %d", term.ExitCode())

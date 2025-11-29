@@ -16,10 +16,11 @@ type Router struct {
 	term   *terminal.Terminal
 	prefix string
 	buf    []rune
+	client pb.NLAgentClient
 }
 
-func NewRouter(dst io.WriteCloser, term *terminal.Terminal) *Router {
-	return &Router{dst: dst, term: term, prefix: "nl"}
+func NewRouter(dst io.WriteCloser, term *terminal.Terminal, client pb.NLAgentClient) *Router {
+	return &Router{dst: dst, term: term, prefix: "nl", client: client}
 }
 
 func (r *Router) Write(text []byte) (int, error) {
@@ -64,7 +65,7 @@ func (r *Router) SendPrompt(line string) *pb.LLMResponse {
 		cwd := ""
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		response = RPCClient(ctx, prompt, cwd)
+		response = RPCRequest(ctx, prompt, cwd, r.client)
 	}()
 	return response
 }
