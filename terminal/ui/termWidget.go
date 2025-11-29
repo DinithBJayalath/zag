@@ -9,11 +9,13 @@ import (
 	"fyne.io/fyne/v2"
 	"github.com/creack/pty"
 	"github.com/fyne-io/terminal"
+
+	"terminal/utils"
 )
 
 func AttachTerminal(termApp fyne.App) fyne.CanvasObject {
 	//Setting up the initial path
-	cmd := exec.Command("bin/zsh")
+	cmd := exec.Command("/bin/zsh")
 	tmp, _ := os.MkdirTemp("", "zag-zdotdir-")
 	_ = os.WriteFile(filepath.Join(tmp, ".zshrc"), []byte(`
 	setopt PROMPT_SUBST
@@ -29,8 +31,9 @@ func AttachTerminal(termApp fyne.App) fyne.CanvasObject {
 	defer ptmx.Close()
 	// Setting up the terminal widget
 	term := terminal.New()
+	router := utils.NewRouter(ptmx, term)
 	go func() {
-		_ = term.RunLocalShell()
+		_ = term.RunWithConnection(router, ptmx)
 		log.Printf("Shell exited: %d", term.ExitCode())
 		termApp.Quit()
 	}()

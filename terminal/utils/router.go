@@ -1,24 +1,25 @@
 package utils
 
 import (
+	"context"
 	"io"
 	"strings"
 
+	"fyne.io/fyne/v2"
 	"github.com/fyne-io/terminal"
 
 	pb "terminal/grpcService"
 )
 
 type Router struct {
-	dst io.WriteCloser
-	term *terminal.Terminal
+	dst    io.WriteCloser
+	term   *terminal.Terminal
 	prefix string
-	NLRequest func(prompt, cwd string) (pb.LLMResponse, error)
-	buf []rune
+	buf    []rune
 }
 
-func NewRouter(dst io.WriteCloser, term *terminal.Terminal, NLRequest func(string, string) (pb.LLMResponse, error)) *Router {
-	return &Router{dst: dst, term: term, prefix: "nl", NLRequest: NLRequest}
+func NewRouter(dst io.WriteCloser, term *terminal.Terminal) *Router {
+	return &Router{dst: dst, term: term, prefix: "nl"}
 }
 
 func (r *Router) Write(text []byte) (int, error) {
@@ -28,13 +29,42 @@ func (r *Router) Write(text []byte) (int, error) {
 			line := string(r.buf)
 			r.buf = r.buf[:0]
 			if r.IsNL(line) {
-				//Create the function to handle the NL request first
+				response := r.SendPrompt(line)
+				fyne.Do(func(){
+					go func() {
+						_, _ = r.dst.Write([]byte(response.Response))
+                		_, _ = r.dst.Write([]byte{'\n'})
+					}()
+				})
+				continue
 			}
+			if _, err := r.dst.Write([]byte{b}); err != nil { return 0, err }
+		case 0x7f:
+			if len(r.buf) > 0 { r.buf = r.buf[:len(r.buf)-1]}
+			if _, err := r.dst.Write([]byte{b}); err != nil { return 0, err }
+		default:
+			r.buf = append(r.buf, rune(b))
+			if _, err := r.dst.Write([]byte{b}); err != nil { return 0, err }
 		}
 	}
+	return len(text), nil
 }
+
+func (r *Router) Close() error { return r.dst.Close() }
 
 func (r *Router) IsNL(line string) bool {
 	line = strings.TrimSpace(line)
 	return strings.HasPrefix(line, r.prefix)
+}
+
+func (r *Router) SendPrompt(line string) *pb.LLMResponse {
+	var response *pb.LLMResponse
+	go func() {
+		prompt := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), r.prefix))
+		cwd := ""
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		response = RPCClient(ctx, prompt, cwd)
+	}()
+	return response
 }

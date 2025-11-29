@@ -4,6 +4,7 @@ go 1.24.3
 
 require (
 	fyne.io/fyne/v2 v2.7.1-0.20251105193630-e5ef0983771f
+	github.com/creack/pty v1.1.21
 	github.com/fyne-io/terminal v0.0.0-20251106165431-99c9362a70d2
 	google.golang.org/grpc v1.76.0
 	google.golang.org/protobuf v1.36.6
@@ -14,7 +15,6 @@ require (
 	github.com/ActiveState/termtest/conpty v0.5.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
-	github.com/creack/pty v1.1.21 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
