@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"strings"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"github.com/fyne-io/terminal"
@@ -30,22 +31,31 @@ func (r *Router) Write(text []byte) (int, error) {
 			line := string(r.buf)
 			r.buf = r.buf[:0]
 			if r.IsNL(line) {
-				response := r.SendPrompt(line)
-				fyne.Do(func(){
+				ch := r.SendPrompt(context.Background(), line)
+				fyne.Do(func() {
 					go func() {
+						response := <-ch
 						_, _ = r.dst.Write([]byte(response.Response))
-                		_, _ = r.dst.Write([]byte{'\n'})
+						_, _ = r.dst.Write([]byte{'\n'})
 					}()
 				})
 				continue
 			}
-			if _, err := r.dst.Write([]byte{b}); err != nil { return 0, err }
+			if _, err := r.dst.Write([]byte{b}); err != nil {
+				return 0, err
+			}
 		case 0x7f:
-			if len(r.buf) > 0 { r.buf = r.buf[:len(r.buf)-1]}
-			if _, err := r.dst.Write([]byte{b}); err != nil { return 0, err }
+			if len(r.buf) > 0 {
+				r.buf = r.buf[:len(r.buf)-1]
+			}
+			if _, err := r.dst.Write([]byte{b}); err != nil {
+				return 0, err
+			}
 		default:
 			r.buf = append(r.buf, rune(b))
-			if _, err := r.dst.Write([]byte{b}); err != nil { return 0, err }
+			if _, err := r.dst.Write([]byte{b}); err != nil {
+				return 0, err
+			}
 		}
 	}
 	return len(text), nil
@@ -58,14 +68,15 @@ func (r *Router) IsNL(line string) bool {
 	return strings.HasPrefix(line, r.prefix)
 }
 
-func (r *Router) SendPrompt(line string) *pb.LLMResponse {
-	var response *pb.LLMResponse
+func (r *Router) SendPrompt(ctx context.Context, line string) <-chan *pb.LLMResponse {
+	ch := make(chan *pb.LLMResponse)
 	go func() {
+		defer close(ch)
 		prompt := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), r.prefix))
 		cwd := ""
-		ctx, cancel := context.WithCancel(context.Background())
+		c, cancel := context.WithTimeout(ctx, 10*time.Second)
 		defer cancel()
-		response = RPCRequest(ctx, prompt, cwd, r.client)
+		ch <- RPCRequest(c, prompt, cwd, r.client)
 	}()
-	return response
+	return ch
 }
