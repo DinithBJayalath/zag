@@ -4,7 +4,7 @@
 // - protoc             v5.29.3
 // source: nlpAgent.proto
 
-package pb
+package rpc
 
 import (
 	context "context"

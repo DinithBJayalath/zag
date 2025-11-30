@@ -25,7 +25,7 @@ func RPCRequest(ctx context.Context, prompt string, cwd string, client pb.NLAgen
 	request := &pb.PromptRequest{Prompt: prompt, Temperature: 1.0}
 	response, err := client.SendPrompt(ctx, request)
 	if err != nil {
-		log.Printf("Error calling the server: %s", err)
+		log.Printf("Error calling the server: %s", err.Error())
 		return nil
 	}
 	return response

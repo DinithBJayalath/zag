@@ -15,8 +15,10 @@ message PromptRequest {
 }
 
 message LLMResponse {
-    string response = 1;
-    optional int32 tokens_used = 2;
-    bool success = 3;
-    optional string error_message = 4;
+    string command = 1;
+    string explanation = 2;
+    bool is_dangerous = 3; 
+    optional int32 tokens_used = 4;
+    bool success = 5;
+    optional string error_message = 6;
 }

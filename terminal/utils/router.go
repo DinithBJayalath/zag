@@ -20,6 +20,12 @@ type Router struct {
 	client pb.NLAgentClient
 }
 
+type ResultCommand struct {
+	Command     string
+	Explanation string
+	IsDangerous bool
+}
+
 func NewRouter(dst io.WriteCloser, term *terminal.Terminal, client pb.NLAgentClient) *Router {
 	return &Router{dst: dst, term: term, prefix: "nl", client: client}
 }
@@ -35,7 +41,8 @@ func (r *Router) Write(text []byte) (int, error) {
 				fyne.Do(func() {
 					go func() {
 						response := <-ch
-						_, _ = r.dst.Write([]byte(response.Response))
+						result := &ResultCommand{Command: response.Command, Explanation: response.Explanation, IsDangerous: response.IsDangerous}
+						_, _ = r.dst.Write([]byte(result.Command))
 						_, _ = r.dst.Write([]byte{'\n'})
 					}()
 				})

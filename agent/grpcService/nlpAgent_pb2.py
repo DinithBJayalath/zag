@@ -24,17 +24,18 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0enlpAgent.proto\x12\x07nlAgent\"\\\n\rPromptRequest\x12\x0e\n\x06prompt\x18\x01 \x01(\t\x12\x17\n\nmax_tokens\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x13\n\x0btemperature\x18\x03 \x01(\x02\x42\r\n\x0b_max_tokens\"\x88\x01\n\x0bLLMResponse\x12\x10\n\x08response\x18\x01 \x01(\t\x12\x18\n\x0btokens_used\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x0f\n\x07success\x18\x03 \x01(\x08\x12\x1a\n\rerror_message\x18\x04 \x01(\tH\x01\x88\x01\x01\x42\x0e\n\x0c_tokens_usedB\x10\n\x0e_error_message2E\n\x07NLAgent\x12:\n\nSendPrompt\x12\x16.nlAgent.PromptRequest\x1a\x14.nlAgent.LLMResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0enlpAgent.proto\x12\x07nlAgent\"\\\n\rPromptRequest\x12\x0e\n\x06prompt\x18\x01 \x01(\t\x12\x17\n\nmax_tokens\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x13\n\x0btemperature\x18\x03 \x01(\x02\x42\r\n\x0b_max_tokens\"\xb2\x01\n\x0bLLMResponse\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\x12\x13\n\x0b\x65xplanation\x18\x02 \x01(\t\x12\x14\n\x0cis_dangerous\x18\x03 \x01(\x08\x12\x18\n\x0btokens_used\x18\x04 \x01(\x05H\x00\x88\x01\x01\x12\x0f\n\x07success\x18\x05 \x01(\x08\x12\x1a\n\rerror_message\x18\x06 \x01(\tH\x01\x88\x01\x01\x42\x0e\n\x0c_tokens_usedB\x10\n\x0e_error_message2E\n\x07NLAgent\x12:\n\nSendPrompt\x12\x16.nlAgent.PromptRequest\x1a\x14.nlAgent.LLMResponseB\x0fZ\rterminal/mainb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'nlpAgent_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  DESCRIPTOR._loaded_options = None
+  _globals['DESCRIPTOR']._loaded_options = None
+  _globals['DESCRIPTOR']._serialized_options = b'Z\rterminal/main'
   _globals['_PROMPTREQUEST']._serialized_start=27
   _globals['_PROMPTREQUEST']._serialized_end=119
   _globals['_LLMRESPONSE']._serialized_start=122
-  _globals['_LLMRESPONSE']._serialized_end=258
-  _globals['_NLAGENT']._serialized_start=260
-  _globals['_NLAGENT']._serialized_end=329
+  _globals['_LLMRESPONSE']._serialized_end=300
+  _globals['_NLAGENT']._serialized_start=302
+  _globals['_NLAGENT']._serialized_end=371
 # @@protoc_insertion_point(module_scope)

@@ -59,12 +59,7 @@ def processCommand(query):
     commands.insert(0, "set -e")  # Ensure the script exits on error
     full_command = "\n".join(commands)
     is_dangerous, warnings = is_dangerous_command(commands)
-    response = json.dumps({
-            "Command":full_command,
-            "Explanation": explanation,
-            "Is_Dangerous" : is_dangerous
-        })
-    return response
+    return full_command, explanation, is_dangerous
 
 if __name__ == "__main__":
     main()

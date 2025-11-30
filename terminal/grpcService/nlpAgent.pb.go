@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: nlpAgent.proto
 
-package pb
+package rpc
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -83,10 +83,12 @@ func (x *PromptRequest) GetTemperature() float32 {
 
 type LLMResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Response      string                 `protobuf:"bytes,1,opt,name=response,proto3" json:"response,omitempty"`
-	TokensUsed    *int32                 `protobuf:"varint,2,opt,name=tokens_used,json=tokensUsed,proto3,oneof" json:"tokens_used,omitempty"`
-	Success       bool                   `protobuf:"varint,3,opt,name=success,proto3" json:"success,omitempty"`
-	ErrorMessage  *string                `protobuf:"bytes,4,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
+	Command       string                 `protobuf:"bytes,1,opt,name=command,proto3" json:"command,omitempty"`
+	Explanation   string                 `protobuf:"bytes,2,opt,name=explanation,proto3" json:"explanation,omitempty"`
+	IsDangerous   bool                   `protobuf:"varint,3,opt,name=is_dangerous,json=isDangerous,proto3" json:"is_dangerous,omitempty"`
+	TokensUsed    *int32                 `protobuf:"varint,4,opt,name=tokens_used,json=tokensUsed,proto3,oneof" json:"tokens_used,omitempty"`
+	Success       bool                   `protobuf:"varint,5,opt,name=success,proto3" json:"success,omitempty"`
+	ErrorMessage  *string                `protobuf:"bytes,6,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -121,11 +123,25 @@ func (*LLMResponse) Descriptor() ([]byte, []int) {
 	return file_nlpAgent_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *LLMResponse) GetResponse() string {
+func (x *LLMResponse) GetCommand() string {
 	if x != nil {
-		return x.Response
+		return x.Command
 	}
 	return ""
+}
+
+func (x *LLMResponse) GetExplanation() string {
+	if x != nil {
+		return x.Explanation
+	}
+	return ""
+}
+
+func (x *LLMResponse) GetIsDangerous() bool {
+	if x != nil {
+		return x.IsDangerous
+	}
+	return false
 }
 
 func (x *LLMResponse) GetTokensUsed() int32 {
@@ -159,13 +175,15 @@ const file_nlpAgent_proto_rawDesc = "" +
 	"\n" +
 	"max_tokens\x18\x02 \x01(\x05H\x00R\tmaxTokens\x88\x01\x01\x12 \n" +
 	"\vtemperature\x18\x03 \x01(\x02R\vtemperatureB\r\n" +
-	"\v_max_tokens\"\xb5\x01\n" +
-	"\vLLMResponse\x12\x1a\n" +
-	"\bresponse\x18\x01 \x01(\tR\bresponse\x12$\n" +
-	"\vtokens_used\x18\x02 \x01(\x05H\x00R\n" +
+	"\v_max_tokens\"\xf8\x01\n" +
+	"\vLLMResponse\x12\x18\n" +
+	"\acommand\x18\x01 \x01(\tR\acommand\x12 \n" +
+	"\vexplanation\x18\x02 \x01(\tR\vexplanation\x12!\n" +
+	"\fis_dangerous\x18\x03 \x01(\bR\visDangerous\x12$\n" +
+	"\vtokens_used\x18\x04 \x01(\x05H\x00R\n" +
 	"tokensUsed\x88\x01\x01\x12\x18\n" +
-	"\asuccess\x18\x03 \x01(\bR\asuccess\x12(\n" +
-	"\rerror_message\x18\x04 \x01(\tH\x01R\ferrorMessage\x88\x01\x01B\x0e\n" +
+	"\asuccess\x18\x05 \x01(\bR\asuccess\x12(\n" +
+	"\rerror_message\x18\x06 \x01(\tH\x01R\ferrorMessage\x88\x01\x01B\x0e\n" +
 	"\f_tokens_usedB\x10\n" +
 	"\x0e_error_message2E\n" +
 	"\aNLAgent\x12:\n" +

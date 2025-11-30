@@ -6,8 +6,8 @@ from main import processCommand
 
 class NLAgentService(NLAgentServicer):
     def SendPrompt(self, request, context):
-        response = processCommand(request.prompt)
-        return LLMResponse(response = response)
+        command, explanation, is_dangerous = processCommand(request.prompt)
+        return LLMResponse(command = command)
 
 
 def serve():
