@@ -11,8 +11,10 @@ import (
 func main() {
 	termApp := app.New()
 	termWindow := termApp.NewWindow("Zag")
-	term := ui.AttachTerminal(termApp)
+	term, ptmx, conn := ui.AttachTerminal(termApp)
 	termWindow.SetContent(container.NewStack(term))
 	termWindow.Resize(fyne.NewSize(900, 600))
+	defer ptmx.Close()
+	defer conn.Close()
 	termWindow.ShowAndRun()
 }
