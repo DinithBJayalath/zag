@@ -9,13 +9,13 @@ import (
 	"fyne.io/fyne/v2"
 	"github.com/creack/pty"
 	"github.com/fyne-io/terminal"
-	"google.golang.org/grpc"
+	// "google.golang.org/grpc"
 
-	pb "terminal/grpcService"
+	// pb "terminal/grpcService"
 	"terminal/utils"
 )
 
-func AttachTerminal(termApp fyne.App) (fyne.CanvasObject, *os.File, *grpc.ClientConn) {
+func AttachTerminal(termApp fyne.App) (fyne.CanvasObject, *os.File) {
 	//Setting up the initial path
 	cmd := exec.Command("/bin/zsh")
 	tmp, _ := os.MkdirTemp("", "zag-zdotdir-")
@@ -32,9 +32,7 @@ func AttachTerminal(termApp fyne.App) (fyne.CanvasObject, *os.File, *grpc.Client
 	}
 	// Setting up the terminal widget
 	term := terminal.New()
-	conn := utils.RPCConn()
-	client := pb.NewNLAgentClient(conn)
-	router := utils.NewRouter(ptmx, term, client)
+	router := utils.NewRouter(ptmx, term)
 	go func() {
 		_ = term.RunWithConnection(router, ptmx)
 		log.Printf("Shell exited: %d", term.ExitCode())
@@ -42,5 +40,5 @@ func AttachTerminal(termApp fyne.App) (fyne.CanvasObject, *os.File, *grpc.Client
 			termApp.Quit()
 		})
 	}()
-	return term, ptmx, conn
+	return term, ptmx
 }

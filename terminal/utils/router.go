@@ -17,7 +17,6 @@ type Router struct {
 	term   *terminal.Terminal
 	prefix string
 	buf    []rune
-	client pb.NLAgentClient
 }
 
 type ResultCommand struct {
@@ -26,8 +25,8 @@ type ResultCommand struct {
 	IsDangerous bool
 }
 
-func NewRouter(dst io.WriteCloser, term *terminal.Terminal, client pb.NLAgentClient) *Router {
-	return &Router{dst: dst, term: term, prefix: "nl", client: client}
+func NewRouter(dst io.WriteCloser, term *terminal.Terminal) *Router {
+	return &Router{dst: dst, term: term, prefix: "nl"}
 }
 
 func (r *Router) Write(text []byte) (int, error) {
@@ -77,13 +76,16 @@ func (r *Router) IsNL(line string) bool {
 
 func (r *Router) SendPrompt(ctx context.Context, line string) <-chan *pb.LLMResponse {
 	ch := make(chan *pb.LLMResponse)
+	conn := RPCConn()
+	client := pb.NewNLAgentClient(conn)
+	defer conn.Close()
 	go func() {
 		defer close(ch)
 		prompt := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), r.prefix))
 		cwd := ""
 		c, cancel := context.WithTimeout(ctx, 10*time.Second)
 		defer cancel()
-		ch <- RPCRequest(c, prompt, cwd, r.client)
+		ch <- RPCRequest(c, prompt, cwd, client)
 	}()
 	return ch
 }
